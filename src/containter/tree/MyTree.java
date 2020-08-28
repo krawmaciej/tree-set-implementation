@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 //extends AbstractSet<E>
-//implements Comparable<E>
 
 public class MyTree<E extends Comparable<E>> implements Set<E> {
 	
@@ -49,8 +48,14 @@ public class MyTree<E extends Comparable<E>> implements Set<E> {
 		}
 	}
 	
+	
+	
 	@Override
 	public boolean add(E value) {
+		if(value == null) {
+			throw new NullPointerException("TreeSet cannot contain null entries.");
+		}
+		
 		boolean result = false;
 		if (root == null) {
 			root = new Node<E>(value);
@@ -68,8 +73,15 @@ public class MyTree<E extends Comparable<E>> implements Set<E> {
 
 	@Override
 	public boolean addAll(Collection<? extends E> c) {
-		// TODO Auto-generated method stub
-		return false;
+		if(c == null) {
+			throw new NullPointerException("Collection may not have been initialized.");
+		}
+		
+		boolean result = false;
+		for (E value: c) {
+			result = this.add(value) ? true : result;
+		}
+		return result;
 	}
 
 
@@ -80,18 +92,45 @@ public class MyTree<E extends Comparable<E>> implements Set<E> {
 		
 	}
 
+	private boolean containsNodeWith(E value, Node<E> node) {
+		if (node == null) // not contains
+			return false;
+		
+		if (value.compareTo(node.value) < 0) { // go left
+			return containsNodeWith(value, node.left);
+		} else if (value.compareTo(node.value) > 0) { // go right
+			return containsNodeWith(value, node.right);
+		} else { // is equal = contains
+			return true;
+		}
+	}
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+		if (o == null) {
+			throw new NullPointerException("TreeSet cannot contain null entries.");
+		}
+		
+		if (root == null || !root.value.getClass().isInstance(o)) {
+			return false;
+		}
+		@SuppressWarnings("unchecked")
+		E value = (E) o;
+		return containsNodeWith(value, root);
 	}
 
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
+		if(c == null) {
+			throw new NullPointerException("Collection may not have been initialized.");
+		}
+		
+		boolean result = true;
+		for (Object value: c) {
+			result = result && this.contains(value);
+		}
+		return result;
 	}
 
 
@@ -132,8 +171,7 @@ public class MyTree<E extends Comparable<E>> implements Set<E> {
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 
 
