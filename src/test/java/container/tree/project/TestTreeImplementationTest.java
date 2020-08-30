@@ -30,7 +30,7 @@ class TestTreeImplementationTest {
 		@Test
 		@DisplayName("Then root is null") 
 		void testIfEmptyTree() {
-			assertAll("Veryfiy that tree is empty",
+			assertAll("Verify that tree is empty",
 					() -> assertNull(myTree.root),
 					() -> assertEquals(0, myTree.size)
 			);
@@ -43,7 +43,7 @@ class TestTreeImplementationTest {
 			assertTrue(myTree.add(2), () -> "Add root node");
 			TestTreeImplementation.Node<Integer> root = myTree.root;
 			
-			assertAll("Veryfiy that root node children are empty",
+			assertAll("Verify that root node children are empty",
 					() -> assertNotNull(root),
 					() -> assertEquals(2, root.value),
 					() -> assertNull(root.left),
@@ -73,7 +73,7 @@ class TestTreeImplementationTest {
 			TestTreeImplementation.Node<Integer> right3 = root.right;
 			TestTreeImplementation.Node<Integer> left0 = root.left;
 			TestTreeImplementation.Node<Integer> leftRight1 = left0.right;
-			assertAll("Veryfiy that the tree builds correctly",
+			assertAll("Verify that the tree builds correctly",
 					// not null
 					() -> assertNotNull(root),
 					() -> assertNotNull(right3),

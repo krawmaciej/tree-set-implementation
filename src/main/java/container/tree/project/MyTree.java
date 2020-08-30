@@ -87,13 +87,14 @@ public class MyTree<E extends Comparable<E>> implements Set<E> {
 
 	@Override
 	public void clear() {
+		// TODO: check if every node is eligible for gc
+		root = null;
 		size = 0;
-		// TODO Auto-generated method stub
 		
 	}
 
 	private boolean containsNodeWith(E value, Node<E> node) {
-		if (node == null) // not contains
+		if (node == null) // doesn't contain
 			return false;
 		
 		if (value.compareTo(node.value) < 0) { // go left
@@ -145,20 +146,85 @@ public class MyTree<E extends Comparable<E>> implements Set<E> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	private Node<E> findSuccessorNode(Node<E> node) {
+		Node<E> successor;
+		if (node.left == null) { // node is smallest
+			successor = node;
+		} else {
+			successor = findSuccessorNode(node.left);
+			if (node.left == successor) { // detach smallest from its parent
+				node.left = successor.right;
+			}
+		}
+		
+		return successor;
+	}
+	
+	private Node<E> removeNode(E value, Node<E> node) {
+		if (node == null) {
+	        return null;
+	    }
+	 
+		if (value.compareTo(node.value) < 0) { // go left
+			node.left = removeNode(value, node.left);
+		} else if (value.compareTo(node.value) > 0) { // go right
+			node.right = removeNode(value, node.right);
+		} else { // is equal = delete node
+			
+			size--;
+			if (node.left == null && node.right == null) {
+			    return null;
+			}
+			
+			if (node.right == null) {
+			    return node.left;
+			}
+			 
+			if (node.left == null) {
+			    return node.right;
+			}
+			
+			Node<E> successor = findSuccessorNode(node.right);
+			node.value = successor.value;
+			if (node.right == successor) { // successor was right child
+				node.right = successor.right;
+			}
+			
+		}
+		
+		return node;
+	}
 
 	@Override
 	public boolean remove(Object o) {
-		size--;
-		// TODO Auto-generated method stub
-		return false;
+		if (o == null) {
+			throw new NullPointerException("TreeSet cannot contain null entries.");
+		}
+		
+		if (root == null || !root.value.getClass().isInstance(o)) {
+			return false;
+		}
+		@SuppressWarnings("unchecked")
+		E value = (E) o;
+		int size = this.size;
+		root = removeNode(value, root);
+		
+		return size != this.size;
 	}
 
 
 	@Override
 	public boolean removeAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
+		if(c == null) {
+			throw new NullPointerException("Collection may not have been initialized.");
+		}
+		
+		boolean result = false;
+		for (Object value: c) {
+			result = result || this.remove(value);
+		}
+		return result;
 	}
 
 
