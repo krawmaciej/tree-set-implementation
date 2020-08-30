@@ -1,7 +1,9 @@
 package container.tree.project;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 //extends AbstractSet<E>
@@ -47,8 +49,6 @@ public class MyTree<E extends Comparable<E>> implements Set<E> {
 			return false;
 		}
 	}
-	
-	
 	
 	@Override
 	public boolean add(E value) {
@@ -240,11 +240,20 @@ public class MyTree<E extends Comparable<E>> implements Set<E> {
 		return size;
 	}
 
+	private void inOrder(List<E> list, Node<E> node) {
+	    if (node != null) {
+	        inOrder(list, node.left);
+	        list.add(node.value);
+	        inOrder(list, node.right);
+	    }
+	}
 
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		List<E> list = new ArrayList<E>();
+		inOrder(list, root);
+		
+		return list.toArray();
 	}
 
 

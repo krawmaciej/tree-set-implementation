@@ -131,6 +131,33 @@ class MyTreeTest {
 			);
 		}
 		
+		@Test
+		@DisplayName("Then values can be added and removed") 
+		void testAddAndRemove() {
+			assertAll("Verify that values are removed",
+					() -> assertTrue(myTree.isEmpty()),
+					() -> assertEquals(0, myTree.size()),
+					() -> assertTrue(myTree.add(0)),
+					() -> assertFalse(myTree.isEmpty()),
+					() -> assertEquals(1, myTree.size()),
+					() -> assertTrue(myTree.add(1)),
+					() -> assertFalse(myTree.isEmpty()),
+					() -> assertEquals(2, myTree.size()),
+					() -> assertTrue(myTree.remove(0)),
+					() -> assertFalse(myTree.isEmpty()),
+					() -> assertEquals(1, myTree.size()),
+					() -> assertTrue(myTree.add(0)),
+					() -> assertFalse(myTree.isEmpty()),
+					() -> assertEquals(2, myTree.size()),
+					() -> assertTrue(myTree.remove(0)),
+					() -> assertFalse(myTree.isEmpty()),
+					() -> assertEquals(1, myTree.size()),
+					() -> assertTrue(myTree.remove(1)),
+					() -> assertTrue(myTree.isEmpty()),
+					() -> assertEquals(0, myTree.size())
+			);
+		}
+		
 	}
 	
 	@Nested
@@ -152,7 +179,7 @@ class MyTreeTest {
 		@DisplayName("Then first value added can be removed") 
 		void testRemoveFirstValue() {
 			int first = collection.get(0);
-			assertAll("Verify that values are added",
+			assertAll("Verify that value is removed",
 					() -> assertFalse(myTree.isEmpty()),
 					() -> assertEquals(6, myTree.size()),
 					() -> assertTrue(myTree.contains(first)),
@@ -167,7 +194,7 @@ class MyTreeTest {
 		@DisplayName("Then second value added can be removed") 
 		void testRemoveSecondValue() {
 			int second = collection.get(1);
-			assertAll("Verify that values are added",
+			assertAll("Verify that value is removed",
 					() -> assertFalse(myTree.isEmpty()),
 					() -> assertEquals(6, myTree.size()),
 					() -> assertTrue(myTree.contains(second)),
@@ -182,7 +209,7 @@ class MyTreeTest {
 		@DisplayName("Then third value added can be removed") 
 		void testRemoveThirdValue() {
 			int third = collection.get(0);
-			assertAll("Verify that values are added",
+			assertAll("Verify that value is removed",
 					() -> assertFalse(myTree.isEmpty()),
 					() -> assertEquals(6, myTree.size()),
 					() -> assertTrue(myTree.contains(third)),
@@ -192,7 +219,6 @@ class MyTreeTest {
 					() -> assertEquals(5, myTree.size())
 			);
 		}
-		
 		
 		@Test
 		@DisplayName("Then nodes can be removed") 
@@ -236,9 +262,13 @@ class MyTreeTest {
 		}
 		
 		@Test
-		@DisplayName("Then nodes from a list can be removed") 
-		void testRemoveAllValues() {
-			// remove all uses remove method in a loop
+		@DisplayName("and tree is made into an array Then this array is sorted") 
+		void testToArray() {
+			Object[] array = { 0, 1, 2, 3, 6, 11 };
+			assertAll("Verify that array is sorted",
+					() -> assertEquals("[0, 1, 2, 3, 6, 11]", Arrays.toString(myTree.toArray())),
+					() -> assertTrue(Arrays.equals(myTree.toArray(), array))
+			);
 		}
 		
 		
